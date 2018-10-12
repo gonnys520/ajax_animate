@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jquery animate</title>
+</head>
+<body>
+
+<style>
+    .sample{
+        position:absolute;
+        top:100px;
+        left:100px;
+
+
+    }
+    .wrapper{
+        width:100%;
+        height:100vh;
+        background-color: lightpink;
+    }
+
+</style>
+
+<div class="wrapper">
+    <!--//만화책 뷰어 용-->
+    <img class="sample" src = "http://localhost:8080/jsonEx/imgs/1_000.jpg">
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    //3)만화책 뷰어
+
+    var startX, endX;
+    var direction;
+    var currentPage =0;
+
+    var sample = $(".sample");
+
+    var host="http://localhost:8080";
+
+    $(".wrapper").on("touchstart mousedown",function (e) {
+
+        startX=e.pageX;
+
+    });
+
+    $(".wrapper").on("touchend mouseup",function (e) {
+
+        endX=e.pageX;
+
+        var gap = startX-endX;
+        // direction = gap > 0? "right" :"left"; //스와이프로 클릭시 left,right나옴
+        direction = gap > 0? "f" :"p"; //스와이프로 클릭시 left,right나옴
+        console.log(direction);
+
+        $.getJSON("http://localhost:8080/jsonEx/webtoon",
+            {page:currentPage, dir:direction}, function (data) {
+                console.log(data);
+                if(direction==='f'){
+                    currentPage++;
+                }else if(direction==='p'){
+                    currentPage--;
+                }
+
+                sample.attr("src",host+data.dest);
+
+            })
+
+
+    });
+
+
+    // // 2)스와이프 - 옆으로로
+    // var startX, endX;
+    // var direction;
+    // //책뷰어용
+    //  var currentPage =0;
+    //
+    //  $(".wrapper").on("touchstart mousedown",function (e) {
+    //
+    //      startX=e.pageX;
+    //
+    //  });
+    //
+    //  $(".wrapper").on("touchend mouseup",function (e) {
+    //
+    //      endX=e.pageX;
+    //
+    //      var gap = startX-endX;
+    //     // direction = gap > 0? "right" :"left"; //스와이프로 클릭시 left,right나옴
+    //      direction = gap > 0? "f" :"p"; //스와이프로 클릭시 left,right나옴
+    //      console.log(direction);
+    //
+    //
+    //  });
+
+    //1)/*마우스 찍는 곳으로 이동하고 싶음-
+    // $(".wrapper").on("mousemove",function (e) { /*바디에는 클릭 이벤트 불가*/
+    //
+    //     // 마우스 찍은 곳 위치
+    //     var xPos = e.pageX+"px"; //문자열이 됨
+    //     var yPos = e.pageY+"px";
+    //
+    //     console.log(xPos,yPos);
+    //
+    //     $(".sample").animate({left:xPos, top:yPos},0,function () {/*마우스 찍는 곳으로 이동하고 싶음->포지션이 바뀌는 것. css로는 어려움.px문자열 처리*/
+    //         console.log("move end...!")
+    //     })
+    //    console.log(e);
+    // });
+
+
+</script>
+
+</body>
+</html>

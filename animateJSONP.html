@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animate</title>
+</head>
+<body>
+
+<style>
+    .sample {
+        position: absolute;
+        top: 100px;
+        left: 100px;
+    }
+
+    .wrapper {
+        width: 100%;
+        height: 100vh;
+        background-color: lightsteelblue;
+    }
+</style>
+<div class="wrapper">
+    <img class="sample" src="http://localhost:8080/jsonEx/imgs/1_000.jpg">
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+    // var count = 0;
+    // setInterval(function () {
+    //     console.log(".............." + count++);
+    // },100);
+
+
+    var startX, endX;
+    var direction;
+    var currentPage = 0;
+
+    var sample = $(".sample");
+
+    var host = "http://localhost:8080";
+
+    $(".sample").on("touchstart mousedown", function (e) {
+        e.preventDefault();
+        startX = e.pageX;
+    });
+
+    $(".sample").on("touchend mouseup", function (e) {
+        endX = e.pageX;
+
+        var gap = startX - endX;
+
+        direction = gap > 0 ? "f":"p";
+
+        console.log(direction);
+
+        $.getJSON({
+            url: "http://localhost:8080/jsonEx/webtoon",
+            dataType: "jsonp",
+            callback:"doJob"
+            }
+        )
+
+    /*    $.getJSON("http://localhost:8080/jsonEx/webtoon", {page:currentPage, dir:direction}, function (data) {
+            console.log(data);
+            if(direction ==1 ){
+                currentPage ++;
+            }else {
+                currentPage --;
+            }
+
+            sample.attr("src", host + data.dest);
+
+        });
+*/
+    });
+
+
+    /* $(".wrapper").on("click", function (e) {
+
+         var xPos = e.pageX + "px";
+         var yPos = e.pageY + "px";
+
+         console.log(xPos, yPos);
+
+         $(".sample").animate({left:xPos, top:yPos},0, function () {
+             console.log("movw end....");
+         });
+        console.log(e);
+
+     });*/
+</script>
+</body>
+</html>
